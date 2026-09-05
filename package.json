@@ -1,0 +1,11 @@
+{
+  "name": "titan-estates",
+  "version": "1.0.0",
+  "description": "Titan Estates - Real Estate Portal",
+  "scripts": {
+    "start": "echo 'Serve on Vercel'"
+  },
+  "keywords": ["real-estate", "property", "bengaluru"],
+  "author": "Your Name",
+  "license": "MIT"
+}
