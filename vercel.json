@@ -2,3 +2,7 @@
   "buildCommand": "echo 'Building...'",
   "outputDirectory": "."
 }
+
+{
+  "cleanUrls": true
+}
