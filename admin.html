@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Titan Estates</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .navbar {
+    background: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo { font-size: 20px; font-weight: 600; color: #1e40af; }
+  .logout-btn {
+    padding: 8px 16px; background: #f0f9ff; color: #1e40af; border: 1px solid #1e40af;
+    border-radius: 6px; cursor: pointer; font-size: 14px;
+  }
+  .logout-btn:hover { background: #1e40af; color: white; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; border-bottom: 1px solid #e0e0e0; }
+  .tab-btn {
+    padding: 10px 20px; background: none; border: none; cursor: pointer; font-size: 14px;
+    color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab-btn.active { color: #1e40af; border-bottom-color: #1e40af; font-weight: 600; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #e0e0e0; }
+  .card h2 { font-size: 18px; margin-bottom: 1rem; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-grid .full-width { grid-column: 1 / -1; }
+  label { display: block; font-size: 13px; color: #666; margin-bottom: 0.3rem; }
+  input, select, textarea {
+    width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 6px;
+    font-size: 14px; font-family: inherit; margin-bottom: 0.75rem;
+  }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+  .checkbox-row input { width: auto; margin: 0; }
+
+  .btn-primary {
+    padding: 10px 20px; background: #1e40af; color: white; border: none; border-radius: 6px;
+    font-weight: 500; cursor: pointer; font-size: 14px;
+  }
+  .btn-primary:hover { background: #1e3a8a; }
+  .btn-danger {
+    padding: 6px 12px; background: #fee2e2; color: #dc2626; border: 1px solid #dc2626;
+    border-radius: 6px; cursor: pointer; font-size: 13px;
+  }
+  .btn-danger:hover { background: #dc2626; color: white; }
+  .btn-secondary {
+    padding: 6px 12px; background: #f0f9ff; color: #1e40af; border: 1px solid #1e40af;
+    border-radius: 6px; cursor: pointer; font-size: 13px;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0; font-size: 13px; }
+  th { color: #666; font-weight: 600; background: #f9fafb; }
+
+  .status-msg { font-size: 13px; margin-top: 0.5rem; }
+  .status-msg.success { color: #059669; }
+  .status-msg.error { color: #dc2626; }
+
+  .loading-text { color: #666; font-size: 14px; padding: 1rem 0; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">🏠 Titan Estates — Admin</div>
+  <button class="logout-btn" onclick="logout()">Log Out</button>
+</nav>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="listings" onclick="switchAdminTab('listings')">Manage Listings</button>
+    <button class="tab-btn" data-tab="inquiries" onclick="switchAdminTab('inquiries')">Inquiries</button>
+  </div>
+
+  <!-- LISTINGS TAB -->
+  <div class="tab-panel active" data-panel="listings">
+    <div class="card">
+      <h2 id="formTitle">Add New Listing</h2>
+      <form id="listingForm">
+        <input type="hidden" id="listingId">
+        <div class="form-grid">
+          <div><label>Title</label><input type="text" id="title" required></div>
+          <div><label>Location</label><input type="text" id="location" required></div>
+
+          <div><label>Type</label>
+            <select id="type" required>
+              <option value="Apartment">Apartment</option>
+              <option value="Villa">Villa</option>
+              <option value="Commercial">Commercial</option>
+            </select>
+          </div>
+          <div><label>Price (in Lakhs, e.g. 95)</label><input type="number" id="price" required></div>
+
+          <div><label>Bedrooms</label><input type="number" id="bedrooms" value="0"></div>
+          <div><label>Bathrooms</label><input type="number" id="bathrooms" value="0"></div>
+
+          <div><label>Area (e.g. 1,250 sqft)</label><input type="text" id="area"></div>
+          <div><label>Icon (emoji, e.g. 🏙️)</label><input type="text" id="icon" value="🏠"></div>
+
+          <div><label>Completion Year</label><input type="number" id="completionYear"></div>
+          <div>
+            <label>&nbsp;</label>
+            <div class="checkbox-row">
+              <input type="checkbox" id="bankLoanSupport">
+              <span>Bank loan assistance available</span>
+            </div>
+          </div>
+
+          <div class="full-width"><label>Google Maps Link</label><input type="url" id="googleMapsLink" placeholder="https://maps.google.com/..."></div>
+          <div class="full-width"><label>Description</label><textarea id="description" rows="3"></textarea></div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">Add Listing</button>
+        <button type="button" class="btn-secondary" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">Cancel Edit</button>
+        <div class="status-msg" id="formStatus"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Existing Listings</h2>
+      <div id="listingsTableWrap"><p class="loading-text">Loading...</p></div>
+    </div>
+  </div>
+
+  <!-- INQUIRIES TAB -->
+  <div class="tab-panel" data-panel="inquiries">
+    <div class="card">
+      <h2>Inquiries</h2>
+      <div id="inquiriesTableWrap"><p class="loading-text">Loading...</p></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseClient = supabase.createClient(
+  'https://chazzeivbcgvazgvkbsd.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoYXp6ZWl2YmNndmF6Z3ZrYnNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NjQ0NDUsImV4cCI6MjEwNTE0MDQ0NX0.GL9jg4aoVb71yXO0OyMWDoGkps_Vy_H9lEBNuN1Ok8k'
+);
+
+// --- Auth guard: redirect to login if not authenticated ---
+(async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'admin-login.html';
+    return;
+  }
+  loadListings();
+  loadInquiries();
+})();
+
+function logout() {
+  supabaseClient.auth.signOut().then(() => window.location.href = 'admin-login.html');
+}
+
+// --- Tabs ---
+function switchAdminTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
+}
+
+// --- Listings: load + render table ---
+async function loadListings() {
+  const wrap = document.getElementById('listingsTableWrap');
+  const { data, error } = await supabaseClient.from('listings').select('*').order('created_at', { ascending: false });
+
+  if (error) {
+    wrap.innerHTML = `<p class="status-msg error">Error loading listings: ${error.message}</p>`;
+    return;
+  }
+
+  if (data.length === 0) {
+    wrap.innerHTML = '<p class="loading-text">No listings yet — add one above.</p>';
+    return;
+  }
+
+  wrap.innerHTML = `
+    <table>
+      <thead><tr><th>Title</th><th>Type</th><th>Price</th><th>Location</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${data.map(row => `
+          <tr>
+            <td>${row.title}</td>
+            <td>${row.type || '—'}</td>
+            <td>₹${row.price}L</td>
+            <td>${row.location || '—'}</td>
+            <td>
+              <button class="btn-secondary" onclick='editListing(${JSON.stringify(row).replace(/'/g, "&apos;")})'>Edit</button>
+              <button class="btn-danger" onclick="deleteListing('${row.id}')">Delete</button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+// --- Listings: add / update ---
+document.getElementById('listingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const statusEl = document.getElementById('formStatus');
+  const id = document.getElementById('listingId').value;
+
+  const payload = {
+    title: document.getElementById('title').value,
+    location: document.getElementById('location').value,
+    type: document.getElementById('type').value,
+    price: parseFloat(document.getElementById('price').value),
+    bedrooms: parseInt(document.getElementById('bedrooms').value) || 0,
+    bathrooms: parseInt(document.getElementById('bathrooms').value) || 0,
+    area: document.getElementById('area').value,
+    icon: document.getElementById('icon').value || '🏠',
+    completion_year: document.getElementById('completionYear').value || null,
+    bank_loan_support: document.getElementById('bankLoanSupport').checked,
+    google_maps_link: document.getElementById('googleMapsLink').value || null,
+    description: document.getElementById('description').value
+  };
+
+  let error;
+  if (id) {
+    ({ error } = await supabaseClient.from('listings').update(payload).eq('id', id));
+  } else {
+    ({ error } = await supabaseClient.from('listings').insert(payload));
+  }
+
+  if (error) {
+    statusEl.textContent = 'Error: ' + error.message;
+    statusEl.className = 'status-msg error';
+  } else {
+    statusEl.textContent = id ? 'Listing updated successfully.' : 'Listing added successfully.';
+    statusEl.className = 'status-msg success';
+    cancelEdit();
+    loadListings();
+  }
+});
+
+function editListing(row) {
+  document.getElementById('formTitle').textContent = 'Edit Listing';
+  document.getElementById('listingId').value = row.id;
+  document.getElementById('title').value = row.title || '';
+  document.getElementById('location').value = row.location || '';
+  document.getElementById('type').value = row.type || 'Apartment';
+  document.getElementById('price').value = row.price || '';
+  document.getElementById('bedrooms').value = row.bedrooms || 0;
+  document.getElementById('bathrooms').value = row.bathrooms || 0;
+  document.getElementById('area').value = row.area || '';
+  document.getElementById('icon').value = row.icon || '🏠';
+  document.getElementById('completionYear').value = row.completion_year || '';
+  document.getElementById('bankLoanSupport').checked = !!row.bank_loan_support;
+  document.getElementById('googleMapsLink').value = row.google_maps_link || '';
+  document.getElementById('description').value = row.description || '';
+
+  document.getElementById('submitBtn').textContent = 'Update Listing';
+  document.getElementById('cancelEditBtn').style.display = 'inline-block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEdit() {
+  document.getElementById('listingForm').reset();
+  document.getElementById('listingId').value = '';
+  document.getElementById('formTitle').textContent = 'Add New Listing';
+  document.getElementById('submitBtn').textContent = 'Add Listing';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+}
+
+async function deleteListing(id) {
+  if (!confirm('Delete this listing? This cannot be undone.')) return;
+  const { error } = await supabaseClient.from('listings').delete().eq('id', id);
+  if (error) {
+    alert('Error deleting: ' + error.message);
+  } else {
+    loadListings();
+  }
+}
+
+// --- Inquiries: load + render table ---
+async function loadInquiries() {
+  const wrap = document.getElementById('inquiriesTableWrap');
+  const { data, error } = await supabaseClient.from('inquiries').select('*').order('created_at', { ascending: false });
+
+  if (error) {
+    wrap.innerHTML = `<p class="status-msg error">Error loading inquiries: ${error.message}</p>`;
+    return;
+  }
+
+  if (data.length === 0) {
+    wrap.innerHTML = '<p class="loading-text">No inquiries yet.</p>';
+    return;
+  }
+
+  wrap.innerHTML = `
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Received</th></tr></thead>
+      <tbody>
+        ${data.map(row => `
+          <tr>
+            <td>${row.name}</td>
+            <td>${row.email}</td>
+            <td>${row.message || '—'}</td>
+            <td>${new Date(row.created_at).toLocaleString('en-IN')}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+</script>
+
+</body>
+</html>
