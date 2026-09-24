@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<he                                                                                                                                                                                                                                                                                                                                                                                                                        ad>
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titan Estates - Real Estate Portal</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -18,433 +14,236 @@ body {
 }
 
 .navbar {
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  background: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 100;
 }
+.logo { font-size: 24px; font-weight: 600; color: #1e40af; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { text-decoration: none; color: #1a1a1a; font-size: 14px; transition: color 0.2s; }
+.nav-links a:hover { color: #1e40af; }
 
-.logo {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1e40af;
+/* --- Banner carousel --- */
+.banner-carousel { position: relative; height: 450px; overflow: hidden; }
+.banner-slide {
+  position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  color: white; flex-direction: column; padding: 2rem;
 }
-
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
+.banner-slide.active { opacity: 1; }
+.banner-slide h1 { font-size: 40px; margin-bottom: 1rem; }
+.banner-slide p { font-size: 18px; opacity: 0.95; }
+.banner-dots {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 10;
 }
-
-.nav-links a {
-  text-decoration: none;
-  color: #1a1a1a;
-  font-size: 14px;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover {
-  color: #1e40af;
-}
-
-.hero {
-  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-  color: white;
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-.hero h1 {
-  font-size: 42px;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.hero p {
-  font-size: 18px;
-  margin-bottom: 2rem;
-  opacity: 0.95;
-}
+.banner-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+.banner-dot.active { background: white; }
 
 .search-box {
-  background: white;
-  border-radius: 8px;
-  padding: 1.5rem;
-  max-width: 800px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 12px;
+  background: white; border-radius: 8px; padding: 1.5rem; max-width: 800px;
+  margin: -40px auto 0; position: relative; z-index: 10;
+  display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-
 .search-box input, .search-box select {
-  padding: 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
+  padding: 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; font-family: inherit;
 }
-
-.search-box input::placeholder {
-  color: #999;
-}
-
+.search-box input::placeholder { color: #999; }
 .search-btn {
-  background: #1e40af;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 24px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
+  background: #1e40af; color: white; border: none; border-radius: 6px; padding: 12px 24px;
+  cursor: pointer; font-weight: 500; transition: background 0.2s;
 }
+.search-btn:hover { background: #1e3a8a; }
 
-.search-btn:hover {
-  background: #1e3a8a;
-}
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.section-title { font-size: 28px; font-weight: 600; margin-bottom: 2rem; color: #1a1a1a; }
+.section-subtitle { font-size: 14px; color: #666; margin-top: -1.5rem; margin-bottom: 2rem; }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.section-title {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: #1a1a1a;
-}
-
-.filters {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
+.filters-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1rem; align-items: center; justify-content: space-between; }
+.filters { display: flex; gap: 12px; flex-wrap: wrap; }
 .filter-btn {
-  padding: 8px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 20px;
-  background: white;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
+  padding: 8px 16px; border: 1px solid #e0e0e0; border-radius: 20px; background: white;
+  cursor: pointer; font-size: 14px; transition: all 0.2s;
+}
+.filter-btn.active { background: #1e40af; color: white; border-color: #1e40af; }
+.filter-btn:hover { border-color: #1e40af; }
+
+.extra-filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 2rem; }
+.extra-filters select {
+  padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px;
+  font-family: inherit; background: white; cursor: pointer;
 }
 
-.filter-btn.active {
-  background: #1e40af;
-  color: white;
-  border-color: #1e40af;
-}
+.results-count { font-size: 14px; color: #666; margin-bottom: 1rem; }
 
-.filter-btn:hover {
-  border-color: #1e40af;
-}
-
-.properties-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  margin-bottom: 3rem;
-}
-
+.properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 3rem; }
 .property-card {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #e0e0e0;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.property-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
+.property-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
 .property-image {
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  color: #1e40af;
+  width: 100%; height: 200px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  display: flex; align-items: center; justify-content: center; font-size: 48px; color: #1e40af; position: relative;
 }
-
-.property-content {
-  padding: 1.5rem;
+.possession-badge {
+  position: absolute; top: 10px; right: 10px; background: white; color: #1e40af;
+  font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px;
 }
-
-.property-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #1a1a1a;
-}
-
-.property-location {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.property-details {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 13px;
-  color: #666;
-}
-
-.property-detail {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.property-price {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e40af;
-  margin-bottom: 1rem;
-}
-
+.property-content { padding: 1.5rem; }
+.property-title { font-size: 16px; font-weight: 600; margin-bottom: 0.5rem; color: #1a1a1a; }
+.property-location { font-size: 13px; color: #666; margin-bottom: 1rem; display: flex; align-items: center; gap: 4px; }
+.property-details { display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 13px; color: #666; }
+.property-detail { display: flex; align-items: center; gap: 4px; }
+.property-price { font-size: 18px; font-weight: 600; color: #1e40af; margin-bottom: 1rem; }
 .property-btn {
-  width: 100%;
-  padding: 10px;
-  background: #f0f9ff;
-  border: 1px solid #1e40af;
-  color: #1e40af;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
+  width: 100%; padding: 10px; background: #f0f9ff; border: 1px solid #1e40af; color: #1e40af;
+  border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;
 }
+.property-btn:hover { background: #1e40af; color: white; }
 
-.property-btn:hover {
-  background: #1e40af;
-  color: white;
+/* --- Why Choose Us --- */
+.trust-section { background: white; padding: 3rem 2rem; }
+.trust-grid {
+  max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center;
 }
+.trust-item { padding: 1rem; }
+.trust-icon { font-size: 36px; margin-bottom: 0.75rem; }
+.trust-title { font-weight: 600; margin-bottom: 0.5rem; }
+.trust-text { font-size: 13px; color: #666; }
 
+/* --- EMI Calculator --- */
+.emi-section { padding: 3rem 2rem; }
+.emi-card {
+  max-width: 900px; margin: 0 auto; background: white; border-radius: 12px; padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+}
+.emi-inputs label { display: block; font-size: 13px; color: #666; margin: 1rem 0 0.4rem; }
+.emi-inputs label:first-child { margin-top: 0; }
+.emi-inputs input[type="range"] { width: 100%; }
+.emi-value { font-weight: 600; color: #1e40af; }
+.emi-result { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #f0f9ff; border-radius: 8px; padding: 1.5rem; }
+.emi-result-label { font-size: 13px; color: #666; margin-bottom: 0.5rem; }
+.emi-result-value { font-size: 32px; font-weight: 700; color: #1e40af; margin-bottom: 1rem; }
+.emi-breakdown { font-size: 13px; color: #666; }
+
+/* --- Testimonials --- */
+.testimonials-section { background: white; padding: 3rem 2rem; }
+.testimonial-carousel { max-width: 700px; margin: 0 auto; position: relative; min-height: 160px; }
+.testimonial-slide { display: none; text-align: center; padding: 0 2rem; }
+.testimonial-slide.active { display: block; }
+.testimonial-text { font-style: italic; color: #444; margin-bottom: 1rem; line-height: 1.6; }
+.testimonial-author { font-weight: 600; color: #1e40af; }
+.testimonial-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.5rem; }
+.testimonial-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; cursor: pointer; }
+.testimonial-dot.active { background: #1e40af; }
+
+/* --- Insights teaser --- */
+.insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.insight-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; }
+.insight-image {
+  height: 120px; background: linear-gradient(135deg, #f0f9ff, #dbeafe);
+  display: flex; align-items: center; justify-content: center; font-size: 32px; color: #1e40af;
+}
+.insight-content { padding: 1rem; }
+.insight-title { font-weight: 600; font-size: 14px; margin-bottom: 0.4rem; }
+.insight-text { font-size: 12px; color: #666; }
+
+/* --- Modal --- */
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);
+  z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
 }
-
-.modal.active {
-  display: flex;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 12px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 25px rgba(0,0,0,0.15);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-}
-
-.modal-body {
-  padding: 1.5rem;
-}
-
+.modal.active { display: flex; }
+.modal-content { background: white; border-radius: 12px; max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px rgba(0,0,0,0.15); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid #e0e0e0; }
+.modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+.modal-body { padding: 1.5rem; }
 .modal-image {
-  width: 100%;
-  height: 300px;
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  color: #1e40af;
-  margin-bottom: 1.5rem;
+  width: 100%; height: 260px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 64px; color: #1e40af; margin-bottom: 1rem;
 }
+.modal-title { font-size: 24px; font-weight: 600; margin-bottom: 0.5rem; }
+.modal-location { color: #666; margin-bottom: 1rem; }
 
-.modal-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+.modal-tabs { display: flex; gap: 6px; border-bottom: 1px solid #e0e0e0; margin-bottom: 1.5rem; }
+.modal-tab {
+  padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 14px; color: #666;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
 }
+.modal-tab.active { color: #1e40af; border-bottom-color: #1e40af; font-weight: 600; }
+.modal-tab-panel { display: none; }
+.modal-tab-panel.active { display: block; }
 
-.modal-location {
-  color: #666;
-  margin-bottom: 1.5rem;
+.modal-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e0e0e0; }
+.spec { display: flex; flex-direction: column; }
+.spec-label { font-size: 12px; color: #666; margin-bottom: 0.25rem; }
+.spec-value { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+.modal-description { margin-bottom: 1rem; line-height: 1.6; color: #666; }
+
+.floorplan-list { display: flex; flex-direction: column; gap: 10px; }
+.floorplan-item {
+  display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;
+  border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px;
 }
+.floorplan-btn { background: #f0f9ff; color: #1e40af; border: 1px solid #1e40af; border-radius: 6px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
 
-.modal-specs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #e0e0e0;
-}
+.amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.amenity-item { text-align: center; padding: 1rem 0.5rem; background: #f9fafb; border-radius: 8px; font-size: 13px; }
+.amenity-icon { font-size: 24px; margin-bottom: 6px; display: block; }
 
-.spec {
-  display: flex;
-  flex-direction: column;
-}
+.location-box { background: #f0f9ff; border-radius: 8px; padding: 2rem; text-align: center; color: #666; font-size: 14px; }
+.location-link { color: #1e40af; font-weight: 600; text-decoration: none; }
 
-.spec-label {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 0.25rem;
-}
-
-.spec-value {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.modal-description {
-  margin-bottom: 2rem;
-  line-height: 1.6;
-  color: #666;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-}
-
+.modal-actions { display: flex; gap: 12px; margin-top: 1.5rem; }
 .btn-primary {
-  flex: 1;
-  padding: 12px;
-  background: #1e40af;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
+  flex: 1; padding: 12px; background: #1e40af; color: white; border: none; border-radius: 6px;
+  font-weight: 500; cursor: pointer; transition: background 0.2s;
 }
-
-.btn-primary:hover {
-  background: #1e3a8a;
-}
-
+.btn-primary:hover { background: #1e3a8a; }
 .btn-secondary {
-  flex: 1;
-  padding: 12px;
-  background: #f0f9ff;
-  color: #1e40af;
-  border: 1px solid #1e40af;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+  flex: 1; padding: 12px; background: #f0f9ff; color: #1e40af; border: 1px solid #1e40af; border-radius: 6px;
+  font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { background: #1e40af; color: white; }
+
+/* --- Lead popup --- */
+.lead-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 1rem; }
+.lead-popup.active { display: flex; }
+.lead-popup-content { background: white; border-radius: 12px; max-width: 420px; width: 100%; padding: 2rem; position: relative; }
+.lead-popup-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: #666; }
+.lead-popup input, .lead-popup select, .lead-popup textarea {
+  width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-family: inherit; font-size: 14px;
 }
 
-.btn-secondary:hover {
-  background: #1e40af;
-  color: white;
+/* --- Floating contact buttons --- */
+.floating-buttons { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 500; }
+.floating-btn {
+  width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-decoration: none; border: none;
 }
+.floating-btn.whatsapp { background: #25D366; }
+.floating-btn.call { background: #1e40af; }
 
-.footer {
-  background: #1a1a1a;
-  color: white;
-  padding: 3rem 2rem;
-  text-align: center;
-  margin-top: 3rem;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  text-align: left;
-  margin-bottom: 2rem;
-}
-
-.footer-section h3 {
-  margin-bottom: 1rem;
-  font-size: 16px;
-}
-
-.footer-section ul {
-  list-style: none;
-}
-
-.footer-section a {
-  color: #ccc;
-  text-decoration: none;
-  font-size: 14px;
-  display: block;
-  margin-bottom: 0.5rem;
-  transition: color 0.2s;
-}
-
-.footer-section a:hover {
-  color: white;
-}
-
-.footer-bottom {
-  border-top: 1px solid #333;
-  padding-top: 2rem;
-  font-size: 14px;
-  color: #999;
-}
+.footer { background: #1a1a1a; color: white; padding: 3rem 2rem; text-align: center; margin-top: 3rem; }
+.footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: left; margin-bottom: 2rem; }
+.footer-section h3 { margin-bottom: 1rem; font-size: 16px; }
+.footer-section ul { list-style: none; }
+.footer-section a { color: #ccc; text-decoration: none; font-size: 14px; display: block; margin-bottom: 0.5rem; transition: color 0.2s; }
+.footer-section a:hover { color: white; }
+.footer-bottom { border-top: 1px solid #333; padding-top: 2rem; font-size: 14px; color: #999; }
 
 @media (max-width: 768px) {
-  .search-box {
-    grid-template-columns: 1fr;
-  }
-  
-  .hero h1 {
-    font-size: 28px;
-  }
-  
-  .properties-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .footer-content {
-    grid-template-columns: 1fr;
-  }
+  .search-box { grid-template-columns: 1fr; }
+  .banner-slide h1 { font-size: 28px; }
+  .properties-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr; }
+  .filters-bar { flex-direction: column; align-items: stretch; }
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .emi-card { grid-template-columns: 1fr; }
+  .insights-grid { grid-template-columns: 1fr; }
+  .amenities-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -460,39 +259,161 @@ body {
   </ul>
 </nav>
 
-<div class="hero">
-  <h1>Find Your Perfect Property</h1>
-  <p>Discover exclusive properties in prime locations across the city</p>
-  <div class="search-box">
-    <input type="text" placeholder="Location (e.g., Whitefield)" id="searchLocation">
-    <select id="propertyType">
-      <option value="">Property Type</option>
-      <option value="Apartment">Apartment</option>
-      <option value="Villa">Villa</option>
-      <option value="Commercial">Commercial</option>
-    </select>
-    <select id="priceRange">
-      <option value="">Price Range</option>
-      <option value="0-50">₹0 - 50L</option>
-      <option value="50-100">₹50L - 1Cr</option>
-      <option value="100-200">₹1Cr - 2Cr</option>
-      <option value="200+">₹2Cr+</option>
-    </select>
-    <button class="search-btn" onclick="handleSearch()">Search</button>
+<div class="banner-carousel" id="bannerCarousel">
+  <div class="banner-slide active" style="background: linear-gradient(135deg, #1e40af, #1e3a8a);">
+    <h1>Find Your Perfect Property</h1>
+    <p>Discover exclusive projects across prime locations</p>
   </div>
+  <div class="banner-slide" style="background: linear-gradient(135deg, #059669, #047857);">
+    <h1>Premium Plots Now Open</h1>
+    <p>46 acres of curated residential living</p>
+  </div>
+  <div class="banner-slide" style="background: linear-gradient(135deg, #b45309, #92400e);">
+    <h1>Bank Loan Assistance Available</h1>
+    <p>We help you finance your dream home</p>
+  </div>
+  <div class="banner-dots" id="bannerDots"></div>
+</div>
+
+<div class="search-box">
+  <input type="text" placeholder="Location (e.g., Whitefield)" id="searchLocation">
+  <select id="propertyType">
+    <option value="">All Types</option>
+    <option value="Apartment">Apartment</option>
+    <option value="Villa">Villa</option>
+    <option value="Commercial">Commercial</option>
+  </select>
+  <select id="priceRange">
+    <option value="">Any Price</option>
+    <option value="0-50">₹0 - 50L</option>
+    <option value="50-100">₹50L - 1Cr</option>
+    <option value="100-200">₹1Cr - 2Cr</option>
+    <option value="200+">₹2Cr+</option>
+  </select>
+  <button class="search-btn" onclick="handleSearch()">Search</button>
 </div>
 
 <div class="container">
   <h2 class="section-title">Featured Properties</h2>
-  
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterProperties('all')">All</button>
-    <button class="filter-btn" onclick="filterProperties('Apartment')">Apartments</button>
-    <button class="filter-btn" onclick="filterProperties('Villa')">Villas</button>
-    <button class="filter-btn" onclick="filterProperties('Commercial')">Commercial</button>
+
+  <div class="filters-bar">
+    <div class="filters">
+      <button class="filter-btn active" data-type="all" onclick="setTypeFilter('all')">All</button>
+      <button class="filter-btn" data-type="Apartment" onclick="setTypeFilter('Apartment')">Apartments</button>
+      <button class="filter-btn" data-type="Villa" onclick="setTypeFilter('Villa')">Villas</button>
+      <button class="filter-btn" data-type="Commercial" onclick="setTypeFilter('Commercial')">Commercial</button>
+    </div>
   </div>
 
-  <div class="properties-grid" id="propertiesGrid">
+  <div class="extra-filters">
+    <select id="bhkFilter" onchange="applyFiltersAndSort()">
+      <option value="">Any BHK</option>
+      <option value="1">1 BHK</option>
+      <option value="2">2 BHK</option>
+      <option value="3">3 BHK</option>
+      <option value="4">4+ BHK</option>
+    </select>
+    <select id="possessionFilter" onchange="applyFiltersAndSort()">
+      <option value="">Any Possession Status</option>
+      <option value="ready">Ready to Move</option>
+      <option value="construction">Under Construction</option>
+    </select>
+    <select id="sortBy" onchange="applyFiltersAndSort()">
+      <option value="">Sort By</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="newest">Newest First</option>
+    </select>
+  </div>
+
+  <div class="results-count" id="resultsCount"></div>
+  <div class="properties-grid" id="propertiesGrid"></div>
+</div>
+
+<!-- Why Choose Us -->
+<div class="trust-section">
+  <div class="container" style="padding-top:0; padding-bottom:0;">
+    <h2 class="section-title" style="text-align:center;">Why Choose Titan Estates</h2>
+    <div class="trust-grid">
+      <div class="trust-item"><div class="trust-icon">✅</div><div class="trust-title">Verified Listings</div><div class="trust-text">Every project is verified before it goes live</div></div>
+      <div class="trust-item"><div class="trust-icon">🤝</div><div class="trust-title">Trusted Developers</div><div class="trust-text">Partnered with reputed builders across the city</div></div>
+      <div class="trust-item"><div class="trust-icon">🏦</div><div class="trust-title">Loan Assistance</div><div class="trust-text">End-to-end help with home loan approvals</div></div>
+      <div class="trust-item"><div class="trust-icon">📞</div><div class="trust-title">Dedicated Support</div><div class="trust-text">Personal advisor for every enquiry</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- EMI Calculator -->
+<div class="emi-section">
+  <div class="container" style="padding-top:0; padding-bottom:0;">
+    <h2 class="section-title" style="text-align:center;">Home Loan EMI Calculator</h2>
+    <div class="emi-card">
+      <div class="emi-inputs">
+        <label>Loan Amount: <span class="emi-value" id="loanAmountLabel">₹50,00,000</span></label>
+        <input type="range" id="loanAmount" min="500000" max="30000000" step="100000" value="5000000" oninput="calculateEMI()">
+
+        <label>Interest Rate (% p.a.): <span class="emi-value" id="interestRateLabel">8.5%</span></label>
+        <input type="range" id="interestRate" min="6" max="15" step="0.1" value="8.5" oninput="calculateEMI()">
+
+        <label>Tenure (Years): <span class="emi-value" id="tenureLabel">20</span></label>
+        <input type="range" id="tenure" min="1" max="30" step="1" value="20" oninput="calculateEMI()">
+      </div>
+      <div class="emi-result">
+        <div class="emi-result-label">Monthly EMI</div>
+        <div class="emi-result-value" id="emiResult">₹43,391</div>
+        <div class="emi-breakdown" id="emiBreakdown">Total Interest: ₹—<br>Total Payment: ₹—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="testimonials-section">
+  <div class="container" style="padding-top:0; padding-bottom:0;">
+    <h2 class="section-title" style="text-align:center;">What Our Customers Say</h2>
+    <div class="testimonial-carousel" id="testimonialCarousel">
+      <div class="testimonial-slide active">
+        <p class="testimonial-text">"Titan Estates made our home buying journey seamless. The team helped us at every step, from shortlisting to loan approval."</p>
+        <p class="testimonial-author">— Ramesh K., Whitefield</p>
+      </div>
+      <div class="testimonial-slide">
+        <p class="testimonial-text">"Transparent process and genuinely helpful advisors. We found our dream villa within two weeks of visiting the site."</p>
+        <p class="testimonial-author">— Priya S., Sarjapur Road</p>
+      </div>
+      <div class="testimonial-slide">
+        <p class="testimonial-text">"Great support with paperwork and bank loan coordination. Highly recommend Titan Estates for first-time buyers."</p>
+        <p class="testimonial-author">— Arjun M., Indiranagar</p>
+      </div>
+      <div class="testimonial-dots" id="testimonialDots"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Insights teaser -->
+<div class="container">
+  <h2 class="section-title">Latest Insights</h2>
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="insight-image">📈</div>
+      <div class="insight-content">
+        <div class="insight-title">Bengaluru Property Prices: 2026 Outlook</div>
+        <div class="insight-text">A look at how key micro-markets are trending this year.</div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-image">🏦</div>
+      <div class="insight-content">
+        <div class="insight-title">Home Loan Documents Checklist</div>
+        <div class="insight-text">Everything you need ready before applying for a loan.</div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-image">🏡</div>
+      <div class="insight-content">
+        <div class="insight-title">Apartment vs Villa: What Suits You?</div>
+        <div class="insight-text">Weighing space, cost, and lifestyle before you decide.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -504,6 +425,26 @@ body {
     </div>
     <div class="modal-body" id="modalBody"></div>
   </div>
+</div>
+
+<div class="lead-popup" id="leadPopup">
+  <div class="lead-popup-content">
+    <button class="lead-popup-close" onclick="closeLeadPopup()">✕</button>
+    <h2 style="margin-bottom: 4px; color:#1e40af;">Leave Your Details</h2>
+    <p style="color:#666; margin-bottom: 16px; font-size: 14px;">Assured call back within 5 minutes</p>
+    <form id="leadPopupForm">
+      <input type="text" id="popupName" placeholder="Full Name" required>
+      <input type="email" id="popupEmail" placeholder="Email ID" required>
+      <input type="tel" id="popupPhone" placeholder="Mobile Number" required>
+      <textarea id="popupMessage" placeholder="Message" rows="3"></textarea>
+      <button type="submit" class="btn-primary" style="width:100%;">Send Message</button>
+    </form>
+  </div>
+</div>
+
+<div class="floating-buttons">
+  <a class="floating-btn whatsapp" href="https://wa.me/919606476703" target="_blank" title="Chat on WhatsApp">💬</a>
+  <a class="floating-btn call" href="tel:+919606476703" title="Call us">📞</a>
 </div>
 
 <footer class="footer">
@@ -536,100 +477,61 @@ body {
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>&copy; 2024 Titan Estates. All rights reserved. | Bengaluru, India</p>
-  </div>
+  <div class="footer-bottom"><p>&copy; 2024 Titan Estates. All rights reserved. | Bengaluru, India</p></div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const properties = [
-  {
-    id: 1,
-    title: "Modern 3 BHK in Whitefield",
-    location: "Whitefield, Bengaluru",
-    type: "Apartment",
-    price: "₹95 Lakhs",
-    priceNum: 95,
-    beds: 3,
-    baths: 2,
-    area: "1,250 sqft",
-    icon: "🏙️",
-    description: "Luxury apartment with modern amenities, gym, swimming pool, and 24/7 security. Located in the heart of tech hub Whitefield."
-  },
-  {
-    id: 2,
-    title: "4 BHK Villa in Indiranagar",
-    location: "Indiranagar, Bengaluru",
-    type: "Villa",
-    price: "₹2.5 Crores",
-    priceNum: 250,
-    beds: 4,
-    baths: 3,
-    area: "3,000 sqft",
-    icon: "🏡",
-    description: "Beautiful independent villa with garden, parking for 2 cars, and modern architecture. Perfect for families."
-  },
-  {
-    id: 3,
-    title: "Commercial Space in MG Road",
-    location: "MG Road, Bengaluru",
-    type: "Commercial",
-    price: "₹1.2 Crores",
-    priceNum: 120,
-    beds: 0,
-    baths: 2,
-    area: "2,500 sqft",
-    icon: "🏢",
-    description: "Prime commercial space ideal for startups and established businesses. High visibility, excellent connectivity."
-  },
-  {
-    id: 4,
-    title: "2 BHK Flat in Koramangala",
-    location: "Koramangala, Bengaluru",
-    type: "Apartment",
-    price: "₹65 Lakhs",
-    priceNum: 65,
-    beds: 2,
-    baths: 1,
-    area: "900 sqft",
-    icon: "🏠",
-    description: "Cozy apartment in vibrant Koramangala locality with easy access to cafes, restaurants, and shopping centers."
-  },
-  {
-    id: 5,
-    title: "Luxury 3 BHK in Sarjapur Road",
-    location: "Sarjapur Road, Bengaluru",
-    type: "Villa",
-    price: "₹1.8 Crores",
-    priceNum: 180,
-    beds: 3,
-    baths: 2,
-    area: "2,200 sqft",
-    icon: "👑",
-    description: "Premium villa with landscaped garden, home theater, and smart home features. Gated community with excellent amenities."
-  },
-  {
-    id: 6,
-    title: "Office Space in Ambience Mall",
-    location: "Vasant Kunj, Delhi",
-    type: "Commercial",
-    price: "₹3 Crores",
-    priceNum: 300,
-    beds: 0,
-    baths: 4,
-    area: "4,000 sqft",
-    icon: "🏛️",
-    description: "Prestigious office space in iconic location with premium infrastructure and high foot traffic."
-  }
+// --- Supabase connection ---
+const supabaseClient = supabase.createClient(
+  'https://chazzeivbcgvazgvkbsd.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoYXp6ZWl2YmNndmF6Z3ZrYnNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NjQ0NDUsImV4cCI6MjEwNTE0MDQ0NX0.GL9jg4aoVb71yXO0OyMWDoGkps_Vy_H9lEBNuN1Ok8k'
+);
+
+const dummyProperties = [
+  { id: 'dummy-1', title: 'Modern 3 BHK in Whitefield', location: 'Whitefield, Bengaluru', type: 'Apartment', price: '₹95 Lakhs', priceNum: 95, beds: 3, baths: 2, area: '1,250 sqft', icon: '🏙️', description: 'Luxury apartment with modern amenities, gym, swimming pool, and 24/7 security. Located in the heart of tech hub Whitefield.', completionYear: '2024', createdAt: '2024-01-10' },
+  { id: 'dummy-2', title: '4 BHK Villa in Indiranagar', location: 'Indiranagar, Bengaluru', type: 'Villa', price: '₹2.5 Crores', priceNum: 250, beds: 4, baths: 3, area: '3,000 sqft', icon: '🏡', description: 'Beautiful independent villa with garden, parking for 2 cars, and modern architecture. Perfect for families.', completionYear: '2027', createdAt: '2024-03-05' },
+  { id: 'dummy-3', title: 'Commercial Space in MG Road', location: 'MG Road, Bengaluru', type: 'Commercial', price: '₹1.2 Crores', priceNum: 120, beds: 0, baths: 2, area: '2,500 sqft', icon: '🏢', description: 'Prime commercial space ideal for startups and established businesses. High visibility, excellent connectivity.', completionYear: '2023', createdAt: '2023-11-20' },
+  { id: 'dummy-4', title: '2 BHK Flat in Koramangala', location: 'Koramangala, Bengaluru', type: 'Apartment', price: '₹65 Lakhs', priceNum: 65, beds: 2, baths: 1, area: '900 sqft', icon: '🏠', description: 'Cozy apartment in vibrant Koramangala locality with easy access to cafes, restaurants, and shopping centers.', completionYear: '2025', createdAt: '2024-06-15' },
+  { id: 'dummy-5', title: 'Luxury 3 BHK in Sarjapur Road', location: 'Sarjapur Road, Bengaluru', type: 'Villa', price: '₹1.8 Crores', priceNum: 180, beds: 3, baths: 2, area: '2,200 sqft', icon: '👑', description: 'Premium villa with landscaped garden, home theater, and smart home features. Gated community with excellent amenities.', completionYear: '2026', createdAt: '2024-08-01' },
+  { id: 'dummy-6', title: 'Office Space in Ambience Mall', location: 'Vasant Kunj, Delhi', type: 'Commercial', price: '₹3 Crores', priceNum: 300, beds: 0, baths: 4, area: '4,000 sqft', icon: '🏛️', description: 'Prestigious office space in iconic location with premium infrastructure and high foot traffic.', completionYear: '2028', createdAt: '2024-09-10' }
 ];
 
-let currentFilter = 'all';
+let properties = [];
+let currentTypeFilter = 'all';
 
-function renderProperties(propertiesToRender = properties) {
+function possessionStatus(completionYear) {
+  const year = parseInt(completionYear, 10);
+  if (!year || isNaN(year)) return null;
+  const currentYear = new Date().getFullYear();
+  return year <= currentYear ? 'ready' : 'construction';
+}
+function possessionLabel(status) {
+  if (status === 'ready') return 'Ready to Move';
+  if (status === 'construction') return 'Under Construction';
+  return null;
+}
+
+function renderProperties(propertiesToRender) {
   const grid = document.getElementById('propertiesGrid');
-  grid.innerHTML = propertiesToRender.map(prop => `
-    <div class="property-card" onclick="openModal(${prop.id})">
-      <div class="property-image">${prop.icon}</div>
+  const countEl = document.getElementById('resultsCount');
+  countEl.textContent = `${propertiesToRender.length} propert${propertiesToRender.length === 1 ? 'y' : 'ies'} found`;
+
+  if (propertiesToRender.length === 0) {
+    grid.innerHTML = '<p>No listings match your filters — try adjusting them.</p>';
+    return;
+  }
+
+  grid.innerHTML = propertiesToRender.map(prop => {
+    const status = possessionStatus(prop.completionYear);
+    const badge = possessionLabel(status);
+    return `
+    <div class="property-card" onclick="openModal('${prop.id}')">
+      <div class="property-image">
+        ${prop.icon}
+        ${badge ? `<span class="possession-badge">${badge}</span>` : ''}
+      </div>
       <div class="property-content">
         <div class="property-title">${prop.title}</div>
         <div class="property-location">📍 ${prop.location}</div>
@@ -640,100 +542,231 @@ function renderProperties(propertiesToRender = properties) {
         <div class="property-price">${prop.price}</div>
         <button class="property-btn">View Details</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-function filterProperties(type) {
-  currentFilter = type;
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  if (type === 'all') {
-    renderProperties(properties);
-  } else {
-    renderProperties(properties.filter(p => p.type === type));
+function setTypeFilter(type) {
+  currentTypeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.type === type));
+  document.getElementById('propertyType').value = (type === 'all') ? '' : type;
+  applyFiltersAndSort();
+}
+
+function applyFiltersAndSort() {
+  const location = document.getElementById('searchLocation').value.toLowerCase();
+  const searchType = document.getElementById('propertyType').value;
+  const priceRange = document.getElementById('priceRange').value;
+  const bhk = document.getElementById('bhkFilter').value;
+  const possession = document.getElementById('possessionFilter').value;
+  const sortBy = document.getElementById('sortBy').value;
+
+  currentTypeFilter = searchType || 'all';
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.type === currentTypeFilter));
+
+  let filtered = [...properties];
+  if (currentTypeFilter !== 'all') filtered = filtered.filter(p => p.type === currentTypeFilter);
+  if (location) filtered = filtered.filter(p => p.location.toLowerCase().includes(location));
+  if (priceRange) {
+    const [min, max] = priceRange === '200+' ? [200, Infinity] : priceRange.split('-').map(Number);
+    filtered = filtered.filter(p => p.priceNum >= min && p.priceNum <= max);
   }
+  if (bhk) {
+    filtered = bhk === '4' ? filtered.filter(p => p.beds >= 4) : filtered.filter(p => p.beds === parseInt(bhk, 10));
+  }
+  if (possession) filtered = filtered.filter(p => possessionStatus(p.completionYear) === possession);
+
+  if (sortBy === 'price-asc') filtered.sort((a, b) => a.priceNum - b.priceNum);
+  else if (sortBy === 'price-desc') filtered.sort((a, b) => b.priceNum - a.priceNum);
+  else if (sortBy === 'newest') filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  renderProperties(filtered);
 }
 
 function handleSearch() {
-  const location = document.getElementById('searchLocation').value.toLowerCase();
-  const type = document.getElementById('propertyType').value;
-  const price = document.getElementById('priceRange').value;
-  
-  let filtered = properties;
-  
-  if (location) {
-    filtered = filtered.filter(p => p.location.toLowerCase().includes(location));
-  }
-  
-  if (type) {
-    filtered = filtered.filter(p => p.type === type);
-  }
-  
-  if (price) {
-    const [min, max] = price === '200+' ? [200, Infinity] : price.split('-').map(Number);
-    filtered = filtered.filter(p => p.priceNum >= min && p.priceNum <= max);
-  }
-  
-  renderProperties(filtered);
+  applyFiltersAndSort();
   document.getElementById('propertiesGrid').scrollIntoView({ behavior: 'smooth' });
+}
+
+function switchTab(tabName) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+  document.querySelectorAll('.modal-tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tabName));
 }
 
 function openModal(id) {
   const property = properties.find(p => p.id === id);
   const modal = document.getElementById('propertyModal');
   const modalBody = document.getElementById('modalBody');
-  
+
+  const bhkNum = property.beds || 2;
+  const floorPlans = property.beds > 0
+    ? [`${bhkNum} BHK - ${property.area}`, `${Math.max(bhkNum - 1, 1)} BHK - Compact Layout`]
+    : ['Custom Layout Available'];
+
   modalBody.innerHTML = `
     <div class="modal-image">${property.icon}</div>
     <div class="modal-title">${property.title}</div>
     <div class="modal-location">📍 ${property.location}</div>
-    
-    <div class="modal-specs">
-      ${property.beds > 0 ? `
-        <div class="spec">
-          <div class="spec-label">Bedrooms</div>
-          <div class="spec-value">${property.beds}</div>
-        </div>
-      ` : ''}
-      <div class="spec">
-        <div class="spec-label">Bathrooms</div>
-        <div class="spec-value">${property.baths}</div>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+      <button class="modal-tab" data-tab="floorplans" onclick="switchTab('floorplans')">Floor Plans</button>
+      <button class="modal-tab" data-tab="amenities" onclick="switchTab('amenities')">Amenities</button>
+      <button class="modal-tab" data-tab="location" onclick="switchTab('location')">Location</button>
+    </div>
+
+    <div class="modal-tab-panel active" data-panel="overview">
+      <div class="modal-specs">
+        ${property.beds > 0 ? `<div class="spec"><div class="spec-label">Bedrooms</div><div class="spec-value">${property.beds}</div></div>` : ''}
+        <div class="spec"><div class="spec-label">Bathrooms</div><div class="spec-value">${property.baths}</div></div>
+        <div class="spec"><div class="spec-label">Area</div><div class="spec-value">${property.area}</div></div>
+        <div class="spec"><div class="spec-label">Type</div><div class="spec-value">${property.type}</div></div>
       </div>
-      <div class="spec">
-        <div class="spec-label">Area</div>
-        <div class="spec-value">${property.area}</div>
-      </div>
-      <div class="spec">
-        <div class="spec-label">Type</div>
-        <div class="spec-value">${property.type}</div>
+      <div class="modal-description">${property.description}</div>
+    </div>
+
+    <div class="modal-tab-panel" data-panel="floorplans">
+      <div class="floorplan-list">
+        ${floorPlans.map(fp => `
+          <div class="floorplan-item">
+            <span>${fp}</span>
+            <button class="floorplan-btn" onclick="alert('Floor plan preview coming soon — image will be added here.')">View</button>
+          </div>
+        `).join('')}
       </div>
     </div>
-    
-    <div class="modal-description">${property.description}</div>
-    
+
+    <div class="modal-tab-panel" data-panel="amenities">
+      <div class="amenities-grid">
+        <div class="amenity-item"><span class="amenity-icon">🏊</span>Swimming Pool</div>
+        <div class="amenity-item"><span class="amenity-icon">🏋️</span>Gym</div>
+        <div class="amenity-item"><span class="amenity-icon">🌳</span>Landscaped Garden</div>
+        <div class="amenity-item"><span class="amenity-icon">🔒</span>24/7 Security</div>
+        <div class="amenity-item"><span class="amenity-icon">🚗</span>Covered Parking</div>
+        <div class="amenity-item"><span class="amenity-icon">⚡</span>Power Backup</div>
+      </div>
+    </div>
+
+    <div class="modal-tab-panel" data-panel="location">
+      <div class="location-box">
+        📍 ${property.location}<br><br>
+        <a class="location-link" href="https://www.google.com/maps/search/${encodeURIComponent(property.location)}" target="_blank">Open in Google Maps →</a>
+      </div>
+    </div>
+
     <div class="modal-actions">
       <button class="btn-primary" onclick="alert('Contact details sent to your email!')">Contact Agent</button>
       <button class="btn-secondary" onclick="alert('Property added to your wishlist!')">Save Property</button>
     </div>
   `;
-  
+
   modal.classList.add('active');
 }
 
-function closeModal() {
-  document.getElementById('propertyModal').classList.remove('active');
-}
-
+function closeModal() { document.getElementById('propertyModal').classList.remove('active'); }
 document.addEventListener('click', function(event) {
   const modal = document.getElementById('propertyModal');
-  if (event.target === modal) {
-    closeModal();
-  }
+  if (event.target === modal) closeModal();
 });
 
-renderProperties();
+// --- Banner carousel ---
+const bannerSlides = document.querySelectorAll('.banner-slide');
+const bannerDotsContainer = document.getElementById('bannerDots');
+let currentSlide = 0;
+bannerSlides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'banner-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  bannerDotsContainer.appendChild(dot);
+});
+function goToSlide(index) {
+  bannerSlides[currentSlide].classList.remove('active');
+  document.querySelectorAll('.banner-dot')[currentSlide].classList.remove('active');
+  currentSlide = index;
+  bannerSlides[currentSlide].classList.add('active');
+  document.querySelectorAll('.banner-dot')[currentSlide].classList.add('active');
+}
+setInterval(() => goToSlide((currentSlide + 1) % bannerSlides.length), 4000);
+
+// --- Testimonial carousel ---
+const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+const testimonialDotsContainer = document.getElementById('testimonialDots');
+let currentTestimonial = 0;
+testimonialSlides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToTestimonial(i);
+  testimonialDotsContainer.appendChild(dot);
+});
+function goToTestimonial(index) {
+  testimonialSlides[currentTestimonial].classList.remove('active');
+  document.querySelectorAll('.testimonial-dot')[currentTestimonial].classList.remove('active');
+  currentTestimonial = index;
+  testimonialSlides[currentTestimonial].classList.add('active');
+  document.querySelectorAll('.testimonial-dot')[currentTestimonial].classList.add('active');
+}
+setInterval(() => goToTestimonial((currentTestimonial + 1) % testimonialSlides.length), 5000);
+
+// --- EMI Calculator ---
+function calculateEMI() {
+  const P = parseFloat(document.getElementById('loanAmount').value);
+  const annualRate = parseFloat(document.getElementById('interestRate').value);
+  const years = parseFloat(document.getElementById('tenure').value);
+
+  document.getElementById('loanAmountLabel').textContent = '₹' + P.toLocaleString('en-IN');
+  document.getElementById('interestRateLabel').textContent = annualRate + '%';
+  document.getElementById('tenureLabel').textContent = years;
+
+  const r = annualRate / 12 / 100;
+  const n = years * 12;
+  const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const totalPayment = emi * n;
+  const totalInterest = totalPayment - P;
+
+  document.getElementById('emiResult').textContent = '₹' + Math.round(emi).toLocaleString('en-IN');
+  document.getElementById('emiBreakdown').innerHTML =
+    `Total Interest: ₹${Math.round(totalInterest).toLocaleString('en-IN')}<br>Total Payment: ₹${Math.round(totalPayment).toLocaleString('en-IN')}`;
+}
+
+// --- Popup lead form ---
+function closeLeadPopup() {
+  document.getElementById('leadPopup').classList.remove('active');
+  sessionStorage.setItem('leadPopupShown', 'true');
+}
+setTimeout(() => {
+  if (!sessionStorage.getItem('leadPopupShown')) document.getElementById('leadPopup').classList.add('active');
+}, 5000);
+document.getElementById('leadPopupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const { error } = await supabaseClient.from('inquiries').insert({
+    name: document.getElementById('popupName').value,
+    email: document.getElementById('popupEmail').value,
+    message: `Phone: ${document.getElementById('popupPhone').value} | ${document.getElementById('popupMessage').value}`,
+  });
+  if (error) { alert('Something went wrong, please try again.'); }
+  else { alert("Thanks! We'll get back to you soon."); closeLeadPopup(); }
+});
+
+// --- Load listings: dummy data + Supabase ---
+async function loadProperties() {
+  const { data, error } = await supabaseClient.from('listings').select('*');
+  let dbProperties = [];
+  if (error) {
+    console.error('Error loading listings:', error);
+  } else {
+    dbProperties = data.map(row => ({
+      id: row.id, title: row.title, location: row.location, type: row.type,
+      price: '₹' + row.price, priceNum: row.price, beds: row.bedrooms, baths: row.bathrooms,
+      area: row.area || '', icon: row.icon || '🏠', description: row.description,
+      completionYear: row.completion_year, createdAt: row.created_at
+    }));
+  }
+  properties = [...dummyProperties, ...dbProperties];
+  applyFiltersAndSort();
+}
+
+loadProperties();
+calculateEMI();
 </script>
 
 </body>
