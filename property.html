@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Details - Titan Estates</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+.navbar { background: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 24px; font-weight: 600; color: #1e40af; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { text-decoration: none; color: #1a1a1a; font-size: 14px; }
+.nav-links a:hover, .nav-links a.active { color: #1e40af; }
+
+.breadcrumb { max-width: 1200px; margin: 1.5rem auto 0; padding: 0 2rem; font-size: 13px; color: #666; }
+.breadcrumb a { color: #1e40af; text-decoration: none; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+.detail-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
+
+.hero-image {
+  width: 100%; height: 320px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: 80px; color: #1e40af; margin-bottom: 1.5rem; position: relative;
+}
+.possession-badge { position: absolute; top: 16px; right: 16px; background: white; color: #1e40af; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 14px; }
+
+.detail-title { font-size: 28px; font-weight: 600; margin-bottom: 0.5rem; }
+.detail-location { color: #666; margin-bottom: 1rem; }
+.detail-price { font-size: 24px; font-weight: 700; color: #1e40af; margin-bottom: 1.5rem; }
+.loan-badge { display: inline-block; background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 10px; margin-left: 10px; }
+
+.card { background: white; border-radius: 10px; border: 1px solid #e0e0e0; padding: 1.5rem; margin-bottom: 1.5rem; }
+
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid #e0e0e0; margin-bottom: 1.5rem; }
+.tab-btn { padding: 10px 18px; background: none; border: none; cursor: pointer; font-size: 14px; color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab-btn.active { color: #1e40af; border-bottom-color: #1e40af; font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.modal-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e0e0e0; }
+.spec { display: flex; flex-direction: column; }
+.spec-label { font-size: 12px; color: #666; margin-bottom: 0.25rem; }
+.spec-value { font-size: 18px; font-weight: 600; }
+
+.floorplan-list { display: flex; flex-direction: column; gap: 10px; }
+.floorplan-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; }
+.floorplan-btn { background: #f0f9ff; color: #1e40af; border: 1px solid #1e40af; border-radius: 6px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+
+.amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.amenity-item { text-align: center; padding: 1rem 0.5rem; background: #f9fafb; border-radius: 8px; font-size: 13px; }
+.amenity-icon { font-size: 24px; margin-bottom: 6px; display: block; }
+
+.location-box { background: #f0f9ff; border-radius: 8px; padding: 2rem; text-align: center; color: #666; font-size: 14px; }
+.location-link { color: #1e40af; font-weight: 600; text-decoration: none; }
+
+/* Sticky enquiry sidebar */
+.enquiry-card { position: sticky; top: 90px; }
+.enquiry-card h3 { margin-bottom: 1rem; font-size: 16px; }
+.enquiry-card input, .enquiry-card textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-family: inherit; font-size: 14px; }
+.btn-primary { width: 100%; padding: 12px; background: #1e40af; color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; }
+.btn-primary:hover { background: #1e3a8a; }
+.status-msg { font-size: 13px; margin-top: 0.5rem; }
+.status-msg.success { color: #059669; }
+.status-msg.error { color: #dc2626; }
+
+.similar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.similar-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; text-decoration: none; color: inherit; display: block; }
+.similar-image { height: 120px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); display: flex; align-items: center; justify-content: center; font-size: 32px; color: #1e40af; }
+.similar-content { padding: 0.75rem; }
+.similar-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.similar-price { font-size: 13px; color: #1e40af; font-weight: 600; }
+
+.not-found { text-align: center; padding: 4rem 2rem; color: #666; }
+
+.floating-buttons { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 500; }
+.floating-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-decoration: none; border: none; }
+.floating-btn.whatsapp { background: #25D366; }
+.floating-btn.call { background: #1e40af; }
+
+.footer { background: #1a1a1a; color: white; padding: 3rem 2rem; text-align: center; margin-top: 3rem; }
+.footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: left; margin-bottom: 2rem; }
+.footer-section h3 { margin-bottom: 1rem; font-size: 16px; }
+.footer-section ul { list-style: none; }
+.footer-section a { color: #ccc; text-decoration: none; font-size: 14px; display: block; margin-bottom: 0.5rem; }
+.footer-section a:hover { color: white; }
+.footer-bottom { border-top: 1px solid #333; padding-top: 2rem; font-size: 14px; color: #999; }
+
+@media (max-width: 768px) {
+  .detail-layout { grid-template-columns: 1fr; }
+  .enquiry-card { position: static; }
+  .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">🏠 Titan Estates</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="properties.html" class="active">Properties</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="properties.html">Properties</a> / <span id="breadcrumbTitle">Property</span></div>
+
+<div class="container" id="pageContent">
+  <p style="padding: 3rem 0; text-align:center; color:#666;">Loading...</p>
+</div>
+
+<div class="floating-buttons">
+  <a class="floating-btn whatsapp" href="https://wa.me/919606476703" target="_blank" title="Chat on WhatsApp">💬</a>
+  <a class="floating-btn call" href="tel:+919606476703" title="Call us">📞</a>
+</div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section"><h3>Quick Links</h3><ul>
+      <li><a href="properties.html">Browse Properties</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul></div>
+    <div class="footer-section"><h3>Support</h3><ul>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#privacy">Privacy Policy</a></li>
+    </ul></div>
+    <div class="footer-section"><h3>Company</h3><ul>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#terms">Terms & Conditions</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2024 Titan Estates. All rights reserved. | Bengaluru, India</p></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="shared.js"></script>
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tabName));
+}
+
+function renderNotFound() {
+  document.getElementById('pageContent').innerHTML = `
+    <div class="not-found">
+      <h2>Property not found</h2>
+      <p style="margin-top:0.5rem;">This listing may have been removed. <a href="properties.html">Browse all properties →</a></p>
+    </div>`;
+}
+
+function renderDetail(property, allProperties) {
+  document.getElementById('breadcrumbTitle').textContent = property.title;
+  document.title = property.title + ' - Titan Estates';
+
+  const status = possessionStatus(property.completionYear);
+  const badge = possessionLabel(status);
+  const bhkNum = property.beds || 2;
+  const floorPlans = property.beds > 0
+    ? [`${bhkNum} BHK - ${property.area}`, `${Math.max(bhkNum - 1, 1)} BHK - Compact Layout`]
+    : ['Custom Layout Available'];
+
+  const similar = allProperties
+    .filter(p => p.id !== property.id && p.type === property.type)
+    .slice(0, 4);
+
+  document.getElementById('pageContent').innerHTML = `
+    <div class="detail-layout">
+      <div>
+        <div class="hero-image">
+          ${property.icon}
+          ${badge ? `<span class="possession-badge">${badge}</span>` : ''}
+        </div>
+
+        <div class="detail-title">${property.title}</div>
+        <div class="detail-location">📍 ${property.location}</div>
+        <div class="detail-price">${property.price}${property.bankLoanSupport ? '<span class="loan-badge">🏦 Bank Loan Assistance Available</span>' : ''}</div>
+
+        <div class="card">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" data-tab="floorplans" onclick="switchTab('floorplans')">Floor Plans</button>
+            <button class="tab-btn" data-tab="amenities" onclick="switchTab('amenities')">Amenities</button>
+            <button class="tab-btn" data-tab="location" onclick="switchTab('location')">Location</button>
+          </div>
+
+          <div class="tab-panel active" data-panel="overview">
+            <div class="modal-specs">
+              ${property.beds > 0 ? `<div class="spec"><div class="spec-label">Bedrooms</div><div class="spec-value">${property.beds}</div></div>` : ''}
+              <div class="spec"><div class="spec-label">Bathrooms</div><div class="spec-value">${property.baths}</div></div>
+              <div class="spec"><div class="spec-label">Area</div><div class="spec-value">${property.area}</div></div>
+              <div class="spec"><div class="spec-label">Type</div><div class="spec-value">${property.type}</div></div>
+            </div>
+            <p style="line-height:1.6; color:#666;">${property.description || 'No description available yet.'}</p>
+          </div>
+
+          <div class="tab-panel" data-panel="floorplans">
+            <div class="floorplan-list">
+              ${floorPlans.map(fp => `
+                <div class="floorplan-item">
+                  <span>${fp}</span>
+                  <button class="floorplan-btn" onclick="alert('Floor plan preview coming soon — image will be added here.')">View</button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="amenities">
+            <div class="amenities-grid">
+              <div class="amenity-item"><span class="amenity-icon">🏊</span>Swimming Pool</div>
+              <div class="amenity-item"><span class="amenity-icon">🏋️</span>Gym</div>
+              <div class="amenity-item"><span class="amenity-icon">🌳</span>Landscaped Garden</div>
+              <div class="amenity-item"><span class="amenity-icon">🔒</span>24/7 Security</div>
+              <div class="amenity-item"><span class="amenity-icon">🚗</span>Covered Parking</div>
+              <div class="amenity-item"><span class="amenity-icon">⚡</span>Power Backup</div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="location">
+            <div class="location-box">
+              📍 ${property.location}<br><br>
+              <a class="location-link" href="${property.googleMapsLink || ('https://www.google.com/maps/search/' + encodeURIComponent(property.location))}" target="_blank">Open in Google Maps →</a>
+            </div>
+          </div>
+        </div>
+
+        ${similar.length > 0 ? `
+          <h3 style="margin-bottom:1rem;">Similar Properties</h3>
+          <div class="similar-grid">
+            ${similar.map(p => `
+              <a class="similar-card" href="property.html?id=${encodeURIComponent(p.id)}">
+                <div class="similar-image">${p.icon}</div>
+                <div class="similar-content">
+                  <div class="similar-title">${p.title}</div>
+                  <div class="similar-price">${p.price}</div>
+                </div>
+              </a>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="card enquiry-card">
+        <h3>Interested in this property?</h3>
+        <form id="enquiryForm">
+          <input type="text" id="enqName" placeholder="Full Name" required>
+          <input type="email" id="enqEmail" placeholder="Email ID" required>
+          <input type="tel" id="enqPhone" placeholder="Mobile Number" required>
+          <textarea id="enqMessage" rows="3" placeholder="I'm interested in this property..."></textarea>
+          <button type="submit" class="btn-primary">Contact Agent</button>
+          <div class="status-msg" id="enqStatus"></div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('enquiryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const statusEl = document.getElementById('enqStatus');
+    const payload = {
+      name: document.getElementById('enqName').value,
+      email: document.getElementById('enqEmail').value,
+      message: `Phone: ${document.getElementById('enqPhone').value} | Re: ${property.title} | ${document.getElementById('enqMessage').value}`
+    };
+    // Only attach listing_id for real Supabase listings (dummy IDs aren't valid UUIDs for the FK)
+    if (!String(property.id).startsWith('dummy-')) {
+      payload.listing_id = property.id;
+    }
+    const { error } = await supabaseClient.from('inquiries').insert(payload);
+    if (error) {
+      statusEl.textContent = 'Something went wrong, please try again.';
+      statusEl.className = 'status-msg error';
+    } else {
+      statusEl.textContent = "Thanks! We'll get back to you soon.";
+      statusEl.className = 'status-msg success';
+      e.target.reset();
+    }
+  });
+}
+
+async function init() {
+  const params = getQueryParams();
+  const id = params.id;
+  if (!id) { renderNotFound(); return; }
+
+  const all = await getAllProperties();
+  const property = all.find(p => String(p.id) === String(id));
+
+  if (!property) { renderNotFound(); return; }
+  renderDetail(property, all);
+}
+
+init();
+</script>
+
+</body>
+</html>

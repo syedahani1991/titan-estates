@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Properties - Titan Estates</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+.navbar { background: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 24px; font-weight: 600; color: #1e40af; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { text-decoration: none; color: #1a1a1a; font-size: 14px; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: #1e40af; }
+
+.page-header { background: linear-gradient(135deg, #1e40af, #1e3a8a); color: white; padding: 2.5rem 2rem; text-align: center; }
+.page-header h1 { font-size: 30px; margin-bottom: 0.5rem; }
+.page-header p { opacity: 0.9; font-size: 14px; }
+
+.search-box { background: white; border-radius: 8px; padding: 1.5rem; max-width: 800px; margin: -30px auto 0; position: relative; z-index: 10; display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.search-box input, .search-box select { padding: 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; font-family: inherit; }
+.search-btn { background: #1e40af; color: white; border: none; border-radius: 6px; padding: 12px 24px; cursor: pointer; font-weight: 500; }
+.search-btn:hover { background: #1e3a8a; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+.filters-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1rem; align-items: center; justify-content: space-between; }
+.filters { display: flex; gap: 12px; flex-wrap: wrap; }
+.filter-btn { padding: 8px 16px; border: 1px solid #e0e0e0; border-radius: 20px; background: white; cursor: pointer; font-size: 14px; }
+.filter-btn.active { background: #1e40af; color: white; border-color: #1e40af; }
+.filter-btn:hover { border-color: #1e40af; }
+
+.extra-filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 2rem; }
+.extra-filters select { padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; font-family: inherit; background: white; cursor: pointer; }
+
+.results-count { font-size: 14px; color: #666; margin-bottom: 1rem; }
+
+.properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 3rem; }
+.property-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; color: inherit; display: block; }
+.property-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+.property-image { width: 100%; height: 200px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); display: flex; align-items: center; justify-content: center; font-size: 48px; color: #1e40af; position: relative; }
+.possession-badge { position: absolute; top: 10px; right: 10px; background: white; color: #1e40af; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+.property-content { padding: 1.5rem; }
+.property-title { font-size: 16px; font-weight: 600; margin-bottom: 0.5rem; }
+.property-location { font-size: 13px; color: #666; margin-bottom: 1rem; }
+.property-details { display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 13px; color: #666; }
+.property-price { font-size: 18px; font-weight: 600; color: #1e40af; margin-bottom: 1rem; }
+.property-btn { width: 100%; padding: 10px; background: #f0f9ff; border: 1px solid #1e40af; color: #1e40af; border-radius: 6px; font-weight: 500; text-align: center; }
+
+.floating-buttons { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 500; }
+.floating-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-decoration: none; border: none; }
+.floating-btn.whatsapp { background: #25D366; }
+.floating-btn.call { background: #1e40af; }
+
+.footer { background: #1a1a1a; color: white; padding: 3rem 2rem; text-align: center; margin-top: 3rem; }
+.footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: left; margin-bottom: 2rem; }
+.footer-section h3 { margin-bottom: 1rem; font-size: 16px; }
+.footer-section ul { list-style: none; }
+.footer-section a { color: #ccc; text-decoration: none; font-size: 14px; display: block; margin-bottom: 0.5rem; }
+.footer-section a:hover { color: white; }
+.footer-bottom { border-top: 1px solid #333; padding-top: 2rem; font-size: 14px; color: #999; }
+
+@media (max-width: 768px) {
+  .search-box { grid-template-columns: 1fr; }
+  .properties-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr; }
+  .filters-bar { flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">🏠 Titan Estates</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="properties.html" class="active">Properties</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <h1>Browse Properties</h1>
+  <p>Find apartments, villas, and commercial spaces across the city</p>
+</div>
+
+<div class="search-box">
+  <input type="text" placeholder="Location (e.g., Whitefield)" id="searchLocation">
+  <select id="propertyType">
+    <option value="">All Types</option>
+    <option value="Apartment">Apartment</option>
+    <option value="Villa">Villa</option>
+    <option value="Commercial">Commercial</option>
+  </select>
+  <select id="priceRange">
+    <option value="">Any Price</option>
+    <option value="0-50">₹0 - 50L</option>
+    <option value="50-100">₹50L - 1Cr</option>
+    <option value="100-200">₹1Cr - 2Cr</option>
+    <option value="200+">₹2Cr+</option>
+  </select>
+  <button class="search-btn" onclick="applyFiltersAndSort()">Search</button>
+</div>
+
+<div class="container">
+  <div class="filters-bar">
+    <div class="filters">
+      <button class="filter-btn active" data-type="all" onclick="setTypeFilter('all')">All</button>
+      <button class="filter-btn" data-type="Apartment" onclick="setTypeFilter('Apartment')">Apartments</button>
+      <button class="filter-btn" data-type="Villa" onclick="setTypeFilter('Villa')">Villas</button>
+      <button class="filter-btn" data-type="Commercial" onclick="setTypeFilter('Commercial')">Commercial</button>
+    </div>
+  </div>
+
+  <div class="extra-filters">
+    <select id="bhkFilter" onchange="applyFiltersAndSort()">
+      <option value="">Any BHK</option>
+      <option value="1">1 BHK</option>
+      <option value="2">2 BHK</option>
+      <option value="3">3 BHK</option>
+      <option value="4">4+ BHK</option>
+    </select>
+    <select id="possessionFilter" onchange="applyFiltersAndSort()">
+      <option value="">Any Possession Status</option>
+      <option value="ready">Ready to Move</option>
+      <option value="construction">Under Construction</option>
+    </select>
+    <select id="sortBy" onchange="applyFiltersAndSort()">
+      <option value="">Sort By</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="newest">Newest First</option>
+    </select>
+  </div>
+
+  <div class="results-count" id="resultsCount"></div>
+  <div class="properties-grid" id="propertiesGrid"></div>
+</div>
+
+<div class="floating-buttons">
+  <a class="floating-btn whatsapp" href="https://wa.me/919606476703" target="_blank" title="Chat on WhatsApp">💬</a>
+  <a class="floating-btn call" href="tel:+919606476703" title="Call us">📞</a>
+</div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section"><h3>Quick Links</h3><ul>
+      <li><a href="properties.html">Browse Properties</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul></div>
+    <div class="footer-section"><h3>Support</h3><ul>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#privacy">Privacy Policy</a></li>
+    </ul></div>
+    <div class="footer-section"><h3>Company</h3><ul>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#terms">Terms & Conditions</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2024 Titan Estates. All rights reserved. | Bengaluru, India</p></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="shared.js"></script>
+<script>
+let properties = [];
+let currentTypeFilter = 'all';
+
+function renderProperties(propertiesToRender) {
+  const grid = document.getElementById('propertiesGrid');
+  const countEl = document.getElementById('resultsCount');
+  countEl.textContent = `${propertiesToRender.length} propert${propertiesToRender.length === 1 ? 'y' : 'ies'} found`;
+
+  if (propertiesToRender.length === 0) {
+    grid.innerHTML = '<p>No listings match your filters — try adjusting them.</p>';
+    return;
+  }
+
+  grid.innerHTML = propertiesToRender.map(prop => {
+    const status = possessionStatus(prop.completionYear);
+    const badge = possessionLabel(status);
+    return `
+    <a class="property-card" href="property.html?id=${encodeURIComponent(prop.id)}">
+      <div class="property-image">
+        ${prop.icon}
+        ${badge ? `<span class="possession-badge">${badge}</span>` : ''}
+      </div>
+      <div class="property-content">
+        <div class="property-title">${prop.title}</div>
+        <div class="property-location">📍 ${prop.location}</div>
+        <div class="property-details">
+          <div>${prop.beds > 0 ? '🛏️ ' + prop.beds + ' BHK' : 'N/A'}</div>
+          <div>📏 ${prop.area}</div>
+        </div>
+        <div class="property-price">${prop.price}</div>
+        <div class="property-btn">View Details</div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function setTypeFilter(type) {
+  currentTypeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.type === type));
+  document.getElementById('propertyType').value = (type === 'all') ? '' : type;
+  applyFiltersAndSort();
+}
+
+function applyFiltersAndSort() {
+  const location = document.getElementById('searchLocation').value.toLowerCase();
+  const searchType = document.getElementById('propertyType').value;
+  const priceRange = document.getElementById('priceRange').value;
+  const bhk = document.getElementById('bhkFilter').value;
+  const possession = document.getElementById('possessionFilter').value;
+  const sortBy = document.getElementById('sortBy').value;
+
+  currentTypeFilter = searchType || 'all';
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.type === currentTypeFilter));
+
+  let filtered = [...properties];
+  if (currentTypeFilter !== 'all') filtered = filtered.filter(p => p.type === currentTypeFilter);
+  if (location) filtered = filtered.filter(p => p.location.toLowerCase().includes(location));
+  if (priceRange) {
+    const [min, max] = priceRange === '200+' ? [200, Infinity] : priceRange.split('-').map(Number);
+    filtered = filtered.filter(p => p.priceNum >= min && p.priceNum <= max);
+  }
+  if (bhk) {
+    filtered = bhk === '4' ? filtered.filter(p => p.beds >= 4) : filtered.filter(p => p.beds === parseInt(bhk, 10));
+  }
+  if (possession) filtered = filtered.filter(p => possessionStatus(p.completionYear) === possession);
+
+  if (sortBy === 'price-asc') filtered.sort((a, b) => a.priceNum - b.priceNum);
+  else if (sortBy === 'price-desc') filtered.sort((a, b) => b.priceNum - a.priceNum);
+  else if (sortBy === 'newest') filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  renderProperties(filtered);
+}
+
+// --- Load properties, then apply any filters carried over from the homepage search box ---
+async function init() {
+  properties = await getAllProperties();
+
+  const params = getQueryParams();
+  if (params.location) document.getElementById('searchLocation').value = params.location;
+  if (params.type) {
+    document.getElementById('propertyType').value = params.type;
+    currentTypeFilter = params.type;
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.type === params.type));
+  }
+  if (params.price) document.getElementById('priceRange').value = params.price;
+
+  applyFiltersAndSort();
+}
+
+init();
+</script>
+
+</body>
+</html>
