@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - Titan Estates</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+.navbar { background: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 24px; font-weight: 600; color: #1e40af; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { text-decoration: none; color: #1a1a1a; font-size: 14px; }
+.nav-links a:hover, .nav-links a.active { color: #1e40af; }
+
+.page-header { background: linear-gradient(135deg, #1e40af, #1e3a8a); color: white; padding: 3rem 2rem; text-align: center; }
+.page-header h1 { font-size: 32px; margin-bottom: 0.5rem; }
+.page-header p { opacity: 0.9; font-size: 14px; }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 3rem 2rem; }
+.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+.card { background: white; border-radius: 10px; padding: 2rem; border: 1px solid #e0e0e0; }
+.card h2 { font-size: 18px; margin-bottom: 1.5rem; }
+
+input, textarea { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #e0e0e0; border-radius: 6px; font-family: inherit; font-size: 14px; }
+label { display: block; font-size: 13px; color: #666; margin-bottom: 0.3rem; }
+
+.btn-primary { width: 100%; padding: 12px; background: #1e40af; color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 14px; }
+.btn-primary:hover { background: #1e3a8a; }
+.status-msg { font-size: 13px; margin-top: 0.75rem; }
+.status-msg.success { color: #059669; }
+.status-msg.error { color: #dc2626; }
+
+.info-item { display: flex; gap: 12px; margin-bottom: 1.5rem; align-items: flex-start; }
+.info-icon { font-size: 22px; }
+.info-label { font-size: 12px; color: #666; margin-bottom: 2px; }
+.info-value { font-size: 14px; font-weight: 500; }
+.info-value a { color: #1e40af; text-decoration: none; }
+
+.quick-actions { display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
+.quick-btn { flex: 1; min-width: 140px; padding: 10px; text-align: center; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; }
+.quick-btn.whatsapp { background: #25D366; color: white; }
+.quick-btn.call { background: #1e40af; color: white; }
+
+.floating-buttons { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 500; }
+.floating-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-decoration: none; border: none; }
+.floating-btn.whatsapp { background: #25D366; }
+.floating-btn.call { background: #1e40af; }
+
+.footer { background: #1a1a1a; color: white; padding: 3rem 2rem; text-align: center; margin-top: 3rem; }
+.footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: left; margin-bottom: 2rem; }
+.footer-section h3 { margin-bottom: 1rem; font-size: 16px; }
+.footer-section ul { list-style: none; }
+.footer-section a { color: #ccc; text-decoration: none; font-size: 14px; display: block; margin-bottom: 0.5rem; }
+.footer-section a:hover { color: white; }
+.footer-bottom { border-top: 1px solid #333; padding-top: 2rem; font-size: 14px; color: #999; }
+
+@media (max-width: 768px) {
+  .contact-layout { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">🏠 Titan Estates</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="properties.html">Properties</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <h1>Send Enquiry</h1>
+  <p>Looking for a property investment opportunity, or have land/a project to discuss? Let's connect.</p>
+</div>
+
+<div class="container">
+  <div class="contact-layout">
+    <div class="card">
+      <h2>Send us a message</h2>
+      <form id="contactForm">
+        <label>Full Name</label>
+        <input type="text" id="cName" required>
+        <label>Email</label>
+        <input type="email" id="cEmail" required>
+        <label>Phone Number</label>
+        <input type="tel" id="cPhone" required>
+        <label>Message</label>
+        <textarea id="cMessage" rows="4" placeholder="Tell us what you're looking for..."></textarea>
+        <button type="submit" class="btn-primary">Send Message</button>
+        <div class="status-msg" id="contactStatus"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Contact Information</h2>
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Mobile / WhatsApp</div>
+          <div class="info-value"><a href="tel:+919901069834">9901069834</a></div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">✉️</div>
+        <div>
+          <div class="info-label">Email</div>
+          <div class="info-value"><a href="mailto:ttitanestate@gmail.com">ttitanestate@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Serving</div>
+          <div class="info-value">Bangalore | Mysore</div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <a class="quick-btn whatsapp" href="https://wa.me/919901069834" target="_blank">WhatsApp Us</a>
+        <a class="quick-btn call" href="tel:+919901069834">Call Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="floating-buttons">
+  <a class="floating-btn whatsapp" href="https://wa.me/919901069834" target="_blank" title="Chat on WhatsApp">💬</a>
+  <a class="floating-btn call" href="tel:+919901069834" title="Call us">📞</a>
+</div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section"><h3>Quick Links</h3><ul>
+      <li><a href="properties.html">Browse Properties</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul></div>
+    <div class="footer-section"><h3>Support</h3><ul>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#privacy">Privacy Policy</a></li>
+    </ul></div>
+    <div class="footer-section"><h3>Company</h3><ul>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#terms">Terms & Conditions</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2025 Titan Estates. All rights reserved. | Bangalore | Mysore</p></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseClient = supabase.createClient(
+  'https://chazzeivbcgvazgvkbsd.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoYXp6ZWl2YmNndmF6Z3ZrYnNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NjQ0NDUsImV4cCI6MjEwNTE0MDQ0NX0.GL9jg4aoVb71yXO0OyMWDoGkps_Vy_H9lEBNuN1Ok8k'
+);
+
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const statusEl = document.getElementById('contactStatus');
+  const { error } = await supabaseClient.from('inquiries').insert({
+    name: document.getElementById('cName').value,
+    email: document.getElementById('cEmail').value,
+    message: `Phone: ${document.getElementById('cPhone').value} | [Contact Page] ${document.getElementById('cMessage').value}`
+  });
+  if (error) {
+    statusEl.textContent = 'Something went wrong, please try again.';
+    statusEl.className = 'status-msg error';
+  } else {
+    statusEl.textContent = "Thanks! We'll get back to you soon.";
+    statusEl.className = 'status-msg success';
+    e.target.reset();
+  }
+});
+</script>
+
+</body>
+</html>
