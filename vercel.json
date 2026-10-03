@@ -1,7 +1,1 @@
-{
-  "buildCommand": "echo 'Building...'",
-  "outputDirectory": "."
-}
-{
-  "cleanUrls": true
-}I
+   { "cleanUrls": true }
