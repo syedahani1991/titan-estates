@@ -117,7 +117,27 @@
           </div>
 
           <div class="full-width"><label>Google Maps Link</label><input type="url" id="googleMapsLink" placeholder="https://maps.google.com/..."></div>
+
+          <div class="full-width"><label>Master Plan Link (PDF or image URL)</label><input type="url" id="masterPlanUrl" placeholder="https://..."></div>
+          <div><label>2 BHK Floor Plan Link</label><input type="url" id="floorPlan2bhkUrl" placeholder="https://..."></div>
+          <div><label>3 BHK Floor Plan Link</label><input type="url" id="floorPlan3bhkUrl" placeholder="https://..."></div>
+
           <div class="full-width"><label>Description</label><textarea id="description" rows="3"></textarea></div>
+
+          <div class="full-width">
+            <label>Cover Image (shown on the listing card)</label>
+            <input type="file" id="coverImage" accept="image/*">
+            <div class="status-msg" id="currentCover"></div>
+          </div>
+          <div class="full-width">
+            <label>Gallery Images (select multiple; added to any existing ones)</label>
+            <input type="file" id="galleryImages" accept="image/*" multiple>
+            <div class="checkbox-row">
+              <input type="checkbox" id="clearGallery">
+              <span>Remove existing gallery images on save</span>
+            </div>
+            <div class="status-msg" id="currentGallery"></div>
+          </div>
         </div>
 
         <button type="submit" class="btn-primary" id="submitBtn">Add Listing</button>
@@ -147,6 +167,20 @@ const supabaseClient = supabase.createClient(
   'https://chazzeivbcgvazgvkbsd.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoYXp6ZWl2YmNndmF6Z3ZrYnNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NjQ0NDUsImV4cCI6MjEwNTE0MDQ0NX0.GL9jg4aoVb71yXO0OyMWDoGkps_Vy_H9lEBNuN1Ok8k'
 );
+
+// Remembers images already saved on the listing being edited
+let existingImageUrl = '';
+let existingGallery = [];
+
+// Uploads one file to the public 'listing-images' bucket and returns its public URL
+async function uploadImage(file) {
+  const ext = file.name.split('.').pop();
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const { error } = await supabaseClient.storage.from('listing-images').upload(path, file);
+  if (error) throw error;
+  const { data } = supabaseClient.storage.from('listing-images').getPublicUrl(path);
+  return data.publicUrl;
+}
 
 // --- Auth guard: redirect to login if not authenticated ---
 (async () => {
@@ -223,8 +257,33 @@ document.getElementById('listingForm').addEventListener('submit', async (e) => {
     completion_year: document.getElementById('completionYear').value || null,
     bank_loan_support: document.getElementById('bankLoanSupport').checked,
     google_maps_link: document.getElementById('googleMapsLink').value || null,
+    master_plan_url: document.getElementById('masterPlanUrl').value || null,
+    floor_plan_2bhk_url: document.getElementById('floorPlan2bhkUrl').value || null,
+    floor_plan_3bhk_url: document.getElementById('floorPlan3bhkUrl').value || null,
     description: document.getElementById('description').value
   };
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  statusEl.textContent = 'Saving...';
+  statusEl.className = 'status-msg';
+
+  try {
+    const coverFile = document.getElementById('coverImage').files[0];
+    const galleryFiles = Array.from(document.getElementById('galleryImages').files);
+    const keptGallery = document.getElementById('clearGallery').checked ? [] : existingGallery;
+
+    payload.image_url = coverFile ? await uploadImage(coverFile) : (existingImageUrl || null);
+
+    const newGallery = [];
+    for (const f of galleryFiles) newGallery.push(await uploadImage(f));
+    payload.gallery_urls = [...keptGallery, ...newGallery];
+  } catch (uploadErr) {
+    statusEl.textContent = 'Image upload failed: ' + uploadErr.message;
+    statusEl.className = 'status-msg error';
+    submitBtn.disabled = false;
+    return;
+  }
 
   let error;
   if (id) {
@@ -232,6 +291,8 @@ document.getElementById('listingForm').addEventListener('submit', async (e) => {
   } else {
     ({ error } = await supabaseClient.from('listings').insert(payload));
   }
+
+  submitBtn.disabled = false;
 
   if (error) {
     statusEl.textContent = 'Error: ' + error.message;
@@ -258,7 +319,28 @@ function editListing(row) {
   document.getElementById('completionYear').value = row.completion_year || '';
   document.getElementById('bankLoanSupport').checked = !!row.bank_loan_support;
   document.getElementById('googleMapsLink').value = row.google_maps_link || '';
+  document.getElementById('masterPlanUrl').value = row.master_plan_url || '';
+  document.getElementById('floorPlan2bhkUrl').value = row.floor_plan_2bhk_url || '';
+  document.getElementById('floorPlan3bhkUrl').value = row.floor_plan_3bhk_url || '';
   document.getElementById('description').value = row.description || '';
+
+  // Remember this listing's existing images so saving without picking new files keeps them
+  existingImageUrl = row.image_url || '';
+  existingGallery = Array.isArray(row.gallery_urls) ? row.gallery_urls : [];
+
+  document.getElementById('currentCover').textContent = existingImageUrl
+    ? 'Current cover image is set. Choose a new file above only if you want to replace it.'
+    : 'No cover image set yet.';
+  document.getElementById('currentCover').className = 'status-msg';
+
+  document.getElementById('currentGallery').textContent = existingGallery.length
+    ? `${existingGallery.length} gallery image(s) currently saved. New selections will be added to these unless you check "Remove existing gallery images."`
+    : 'No gallery images yet.';
+  document.getElementById('currentGallery').className = 'status-msg';
+
+  document.getElementById('clearGallery').checked = false;
+  document.getElementById('coverImage').value = '';
+  document.getElementById('galleryImages').value = '';
 
   document.getElementById('submitBtn').textContent = 'Update Listing';
   document.getElementById('cancelEditBtn').style.display = 'inline-block';
@@ -271,6 +353,10 @@ function cancelEdit() {
   document.getElementById('formTitle').textContent = 'Add New Listing';
   document.getElementById('submitBtn').textContent = 'Add Listing';
   document.getElementById('cancelEditBtn').style.display = 'none';
+  existingImageUrl = '';
+  existingGallery = [];
+  document.getElementById('currentCover').textContent = '';
+  document.getElementById('currentGallery').textContent = '';
 }
 
 async function deleteListing(id) {

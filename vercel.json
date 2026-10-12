@@ -1,1 +1,7 @@
-   { "cleanUrls": true }
+{
+  "buildCommand": "echo 'Building Titan Estates...'",
+  "outputDirectory": ".",
+  "env": {
+    "CONTACT_EMAIL": "titanestates@gmail.com"
+  }
+}

@@ -163,9 +163,18 @@ function renderDetail(property, allProperties) {
   const status = possessionStatus(property.completionYear);
   const badge = possessionLabel(status);
   const bhkNum = property.beds || 2;
-  const floorPlans = property.beds > 0
-    ? [`${bhkNum} BHK - ${property.area}`, `${Math.max(bhkNum - 1, 1)} BHK - Compact Layout`]
-    : ['Custom Layout Available'];
+  // Build floor plan rows from real admin-entered URLs. A plan with no URL yet
+  // still shows in the list (so visitors know it exists) but its button is disabled.
+  const floorPlans = [];
+  if (property.floorPlan2bhkUrl || bhkNum === 2 || property.beds === 0) {
+    floorPlans.push({ label: '2 BHK Floor Plan', url: property.floorPlan2bhkUrl });
+  }
+  if (property.floorPlan3bhkUrl || bhkNum === 3 || bhkNum >= 4) {
+    floorPlans.push({ label: '3 BHK Floor Plan', url: property.floorPlan3bhkUrl });
+  }
+  if (floorPlans.length === 0) {
+    floorPlans.push({ label: property.beds > 0 ? `${bhkNum} BHK - ${property.area}` : 'Custom Layout', url: null });
+  }
 
   const similar = allProperties
     .filter(p => p.id !== property.id && p.type === property.type)
@@ -205,8 +214,11 @@ function renderDetail(property, allProperties) {
             <div class="floorplan-list">
               ${floorPlans.map(fp => `
                 <div class="floorplan-item">
-                  <span>${fp}</span>
-                  <button class="floorplan-btn" onclick="alert('Floor plan preview coming soon — image will be added here.')">View</button>
+                  <span>${fp.label}</span>
+                  ${fp.url
+                    ? `<a class="floorplan-btn" href="${fp.url}" target="_blank" style="text-decoration:none;">View</a>`
+                    : `<button class="floorplan-btn" disabled style="opacity:0.5; cursor:not-allowed;" title="Not uploaded yet">Not Available</button>`
+                  }
                 </div>
               `).join('')}
             </div>
@@ -227,6 +239,7 @@ function renderDetail(property, allProperties) {
             <div class="location-box">
               📍 ${property.location}<br><br>
               <a class="location-link" href="${property.googleMapsLink || ('https://www.google.com/maps/search/' + encodeURIComponent(property.location))}" target="_blank">Open in Google Maps →</a>
+              ${property.masterPlanUrl ? `<br><br><a class="location-link" href="${property.masterPlanUrl}" target="_blank">View Site Master Plan →</a>` : ''}
             </div>
           </div>
         </div>

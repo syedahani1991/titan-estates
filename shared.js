@@ -56,6 +56,9 @@ async function getAllProperties() {
       createdAt: row.created_at,
       bankLoanSupport: !!row.bank_loan_support,
       googleMapsLink: row.google_maps_link || null,
+      masterPlanUrl: row.master_plan_url || null,
+      floorPlan2bhkUrl: row.floor_plan_2bhk_url || null,
+      floorPlan3bhkUrl: row.floor_plan_3bhk_url || null,
       imageUrl: row.image_url || null,
       galleryUrls: Array.isArray(row.gallery_urls) ? row.gallery_urls : []
     }));
