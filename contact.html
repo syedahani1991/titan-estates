@@ -172,7 +172,8 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     message: `Phone: ${document.getElementById('cPhone').value} | [Contact Page] ${document.getElementById('cMessage').value}`
   });
   if (error) {
-    statusEl.textContent = 'Something went wrong, please try again.';
+    console.error('Enquiry insert failed:', error);
+    statusEl.textContent = 'Something went wrong. Please call 9901069834 or try again.';
     statusEl.className = 'status-msg error';
   } else {
     statusEl.textContent = "Thanks! We'll get back to you soon.";
