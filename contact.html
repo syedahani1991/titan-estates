@@ -169,7 +169,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   const { error } = await supabaseClient.from('inquiries').insert({
     name: document.getElementById('cName').value,
     email: document.getElementById('cEmail').value,
-    message: `Phone: ${document.getElementById('cPhone').value} | [Contact Page] ${document.getElementById('cMessage').value}`
+    message: `Phone: ${document.getElementById('cPhone').value} | ${document.getElementById('cMessage').value || 'No message'}`
   });
   if (error) {
     console.error('Enquiry insert failed:', error);

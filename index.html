@@ -297,7 +297,7 @@ document.getElementById('enquiryForm').addEventListener('submit', async (e) => {
   const { error } = await supabaseClient.from('inquiries').insert({
     name: name,
     email: email || 'not provided',
-    message: `Phone: ${phone} | [Homepage Popup] ${message || 'No message'}`
+    message: `Phone: ${phone} | ${message || 'No message'}`
   });
 
   if (error) {
